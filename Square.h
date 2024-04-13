@@ -10,6 +10,8 @@ class Square {
     float x;
     float y;
     float size;
+    float width;
+    float height;
     SquareState state;
 
 public:
@@ -24,11 +26,26 @@ public:
         this->x = x;
         this->y = y;
         this->size = size;
+        width = size;
+        height = size;
+        state = EMPTY;
+    }
+
+    Square(float x, float y, float width, float height) {
+        this->x = x;
+        this->y = y;
+        this->width = width;
+        this->height = height;
+        size = width;
         state = EMPTY;
     }
 
     bool isEmpty() {
         return state == EMPTY;
+    }
+
+    SquareState getState() {
+        return state;
     }
 
     void playX() {
@@ -45,25 +62,25 @@ public:
 
         glBegin(GL_LINES);
             glVertex2f(x, y);
-            glVertex2f(x + size, y);
+            glVertex2f(x + width, y);
 
-            glVertex2f(x + size, y);
-            glVertex2f(x + size, y - size);
+            glVertex2f(x + width, y);
+            glVertex2f(x + width, y - height);
 
-            glVertex2f(x + size, y - size);
-            glVertex2f(x, y - size);
+            glVertex2f(x + width, y - height);
+            glVertex2f(x, y - height);
 
-            glVertex2f(x, y - size);
+            glVertex2f(x, y - height);
             glVertex2f(x, y);
         glEnd();
 
         if (state == PLAYER_X) {
             glBegin(GL_LINES);
                 glVertex2f(x + 0.1f, y - 0.1f);
-                glVertex2f(x + size - 0.1f, y - size + 0.1f);
+                glVertex2f(x + width - 0.1f, y - height + 0.1f);
 
-                glVertex2f(x + size - 0.1f, y - 0.1f);
-                glVertex2f(x + 0.1f, y - size + 0.1f);
+                glVertex2f(x + width - 0.1f, y - 0.1f);
+                glVertex2f(x + 0.1f, y - height + 0.1f);
             glEnd();
         } else if (state == PLAYER_O) {
             glBegin(GL_LINES);
@@ -77,7 +94,7 @@ public:
     }
 
     bool contains(float mx, float my) {
-        if (mx >= x && mx <= x + size && my <= y && my >= y - size) {
+        if (mx >= x && mx <= x + width && my <= y && my >= y - height) {
             return true;
         } else {
             return false;

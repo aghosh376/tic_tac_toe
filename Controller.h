@@ -11,9 +11,9 @@ class Controller : public AppController {
 public:
 
     Controller(){
-        game.AIOn();
-        game.playerOFirst();
-        game.start();
+        //game.AIOn();
+        //game.playerOFirst();
+        //game.start();
     }
 
     void leftMouseDown(float x, float y) {
@@ -22,6 +22,11 @@ public:
 
     void render(){
         game.draw();
+        if (game.getState() == PLAYING) {
+            if(game.checkFull()) {
+                game.end();
+            }
+        }
     }
 };
 
