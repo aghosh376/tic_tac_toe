@@ -38,11 +38,11 @@ class Game {
                 for (int j = 0; j < count; j++) {
                     if (board[i][j].isEmpty()) {
                         board[i][j].playO();
-                        break;
+                        playerX = !playerX;
+                        return;
                     }
                 }
             }
-            playerX = !playerX;
         }
     }
 
@@ -80,11 +80,11 @@ public:
         AIButton = Button("With AI?", 0.5, -0.75);
 
         //End screen
-        //message = "  ";
-        //Button displayResults = Button(message, -0.9, 0.75);
+        message = "  ";
+        displayResults = Button(message, -0.9, 0.75);
 
-        Button againButton = Button("Again?", -0.8, 0);
-        Button quitButton = Button("Quit?", -0.1, 0);
+        againButton = Button("Again?", -0.7, 0);
+        quitButton = Button("Quit?", 0.3, 0);
 
         playerX = true;
         AI = false;
@@ -125,7 +125,7 @@ public:
         } else if (winner == EMPTY) {
             message = "Draw";
         }
-        Button displayResults = Button(message, -0.9, 0.75);
+        displayResults = Button(message, -0.2, 0.75);
     }
 
     STATE getState() {
@@ -149,9 +149,22 @@ public:
                     }
                 }
             }
-
+            if (getState() == PLAYING) {
+                if (checkWinner() != EMPTY) {
+                    end(checkWinner());
+                } else if(checkFull()) {
+                    end(checkWinner());
+                }
+            }
             if (AI) {
                 AIMove();
+            }
+            if (getState() == PLAYING) {
+                if (checkWinner() != EMPTY) {
+                    end(checkWinner());
+                } else if(checkFull()) {
+                    end(checkWinner());
+                }
             }
         }
 
@@ -159,23 +172,24 @@ public:
         if (gameState == START) {
 
             if (playButton.contains(x, y)) {
-                playButton.setPressed();
+                //playButton.setPressed();
                 gameState = PLAYING;
             }
 
             if (AIButton.contains( x,  y)) {
                 AIButton.togglePressed();
                 AI = AIButton.getPressed();
+                std::cout << AI << std::endl;
             }
 
             if (button3.contains(x, y)){
                 std::cout << "Will change to 3x3" << std::endl;
-                /*for (int i = 0; i < count; i++){
+                for (int i = 0; i < count; i++){
                     delete[] board[i];
                 }
-                delete[] board;*/
+                delete[] board;
                 count = 3;
-                gameState = PLAYING;
+                //gameState = PLAYING;
                 button3.setPressed();
                 button4.setUnpressed();
                 button5.setUnpressed();
@@ -208,14 +222,27 @@ public:
         }
 
         if (gameState == END) {
+            
             if (againButton.contains(x,y)) {
                 gameState = START;
+                for (int i = 0; i < count; i++){
+                    delete[] board[i];
+                }
+                delete[] board;
+                playerX = true;
+                AIButton.togglePressed();
+                AI = AIButton.getPressed();
+                gameState = START;
+                count = 3;
+                makeBoard();
             }
 
             if (quitButton.contains(x,y)) {
                 //exit(0);
             }
         }
+
+        
     }
 
     void draw() {
@@ -244,9 +271,9 @@ public:
     }
 
     void drawEnd() {
-        //displayResults.draw();
+        displayResults.draw();
         againButton.draw();
-        //quitButton.draw();
+        quitButton.draw();
     } 
 
     bool checkFull() {
@@ -277,6 +304,7 @@ public:
                 } 
             }
             if (rowWin) {
+                std::cout << "Row win" << std::endl;
                 return ref;
             }
         }
@@ -292,6 +320,7 @@ public:
                 } 
             }
             if (colWin) {
+                std::cout << "Col win" << std::endl;
                 return ref;
             }
         }
@@ -302,9 +331,13 @@ public:
             if (board[i][i].getState() != ref){
                 diagWin = false;
             }
-            if (diagWin) {
+        }
+        if (diagWin) {
+                std::cout << "Diag1 win" << std::endl;
+                //std::cout << i << std::endl;
+                //std::cout << board[i][i].getState() << std::endl;
+                //std::cout << ref << std::endl;
                 return ref;
-            }
         }
 
         ref = board[0][count - 1].getState();
@@ -313,9 +346,11 @@ public:
             if (board[i][count - 1 - i].getState() != ref){
                 diagWin2 = false;
             }
-            if (diagWin2) {
+            
+        }
+        if (diagWin2) {
+                std::cout << "Diag2 win" << std::endl;
                 return ref;
-            }
         }
 
         return EMPTY;

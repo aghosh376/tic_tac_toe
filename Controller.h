@@ -13,7 +13,7 @@ public:
     Controller(){
         //game.AIOn();
         //game.playerOFirst();
-        //game.start();
+        game.start();
     }
 
     void leftMouseDown(float x, float y) {
@@ -22,13 +22,6 @@ public:
 
     void render(){
         game.draw();
-        if (game.getState() == PLAYING) {
-            if (game.checkWinner() != EMPTY) {
-                game.end(game.checkWinner());
-            } else if(game.checkFull()) {
-                game.end(game.checkWinner());
-            }
-        }
     }
 };
 

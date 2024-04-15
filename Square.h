@@ -86,8 +86,8 @@ public:
             glBegin(GL_LINES);
                 float inc = (2 * M_PI) / 60;
                 for (float theta = 0; theta <= 2 * M_PI; theta += inc) {
-                    glVertex2f((x + (size / 2)) + (size / 2 - 0.1f) * cos(theta), (y - (size / 2)) + (size / 2 - 0.1f) * sin(theta));
-                    glVertex2f((x + (size / 2)) + (size / 2 - 0.1f) * cos(theta + inc), (y - (size / 2)) + (size / 2 - 0.1f) * sin(theta + inc));
+                    glVertex2f((x + (size / 2)) + (size / 2 - 0.1f) * cos(theta), (y - (height / 2)) + (height / 2 - 0.1f) * sin(theta));
+                    glVertex2f((x + (size / 2)) + (size / 2 - 0.1f) * cos(theta + inc), (y - (height / 2)) + (height / 2 - 0.1f) * sin(theta + inc));
                 }
             glEnd();
         }
