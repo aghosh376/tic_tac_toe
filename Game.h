@@ -230,7 +230,7 @@ public:
                 }
                 delete[] board;
                 playerX = true;
-                AIButton.togglePressed();
+                AIButton.setUnpressed();
                 AI = AIButton.getPressed();
                 gameState = START;
                 count = 3;
@@ -238,7 +238,7 @@ public:
             }
 
             if (quitButton.contains(x,y)) {
-                //exit(0);
+                exit(0);
             }
         }
 
@@ -254,7 +254,7 @@ public:
             for (int i = 0; i < count; i++) {
                 for (int j = 0; j < count; j++) {
                     board[i][j].draw();
-                    std::cout << "DRAWING" << std::endl;
+                    //std::cout << "DRAWING" << std::endl;
                 }
             }
         }

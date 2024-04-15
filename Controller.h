@@ -13,7 +13,7 @@ public:
     Controller(){
         //game.AIOn();
         //game.playerOFirst();
-        game.start();
+        //game.start();
     }
 
     void leftMouseDown(float x, float y) {
