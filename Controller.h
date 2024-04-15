@@ -23,8 +23,10 @@ public:
     void render(){
         game.draw();
         if (game.getState() == PLAYING) {
-            if(game.checkFull()) {
-                game.end();
+            if (game.checkWinner() != EMPTY) {
+                game.end(game.checkWinner());
+            } else if(game.checkFull()) {
+                game.end(game.checkWinner());
             }
         }
     }
